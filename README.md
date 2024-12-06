@@ -4,7 +4,7 @@
 An interactive web application inspired by the popular "Spend Bill Gates Money" concept from neal.fun. Users can explore and virtually spend budget of various billionaire on various luxury items.
 
 ## Features
-- Start with a $100 billion budget
+- Choose your billionaire
 - Interactive item purchasing
 - Real-time budget tracking
 - Responsive design
