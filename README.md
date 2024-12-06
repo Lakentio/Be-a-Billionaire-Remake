@@ -53,5 +53,12 @@ Inspired by the original [Spend Bill Gates Money](https://neal.fun/spend/) by Ne
 - Enhanced visual animations
 
 ### Version 1.3.0 (Current)
-- Added dark mode support
-- Bug fixes and performance improvements
+- Added dark mode toggle functionality
+- Implemented new header features including:
+  * Receipt viewer
+  * Achievements system
+  * Statistics tracking
+- Enhanced search functionality with category filters
+- Improved UI with sticky header
+- Added Font Awesome icons for better visual feedback
+- Integrated Google Fonts (Poppins) for improved typography
