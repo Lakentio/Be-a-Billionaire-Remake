@@ -1,5 +1,18 @@
 // Game state
-let remainingBudget = 100000000000; // $100 billion
+const storedNetWorth = localStorage.getItem('selectedBillionaireNetWorth');
+console.log('Retrieved stored net worth:', storedNetWorth);
+
+let remainingBudget = storedNetWorth ? Number(storedNetWorth) : 100000000000;
+console.log('Initial remaining budget:', remainingBudget);
+
+const initialBudget = remainingBudget;
+console.log('Initial budget set to:', initialBudget);
+
+// Redirect to menu if no billionaire was selected
+if (!storedNetWorth) {
+    window.location.href = 'menu.html';
+}
+
 const cart = new Map();
 const stats = {
     totalPurchases: 0,
@@ -146,7 +159,7 @@ function checkAchievements() {
     }
 
     // Half Way
-    if (!achievements[3].unlocked && stats.moneySpent >= 50000000000) {
+    if (!achievements[3].unlocked && stats.moneySpent >= initialBudget / 2) {
         achievements[3].unlocked = true;
         unlockedAchievements.push(achievements[3]);
     }
@@ -163,21 +176,24 @@ function showAchievementBanner(achievement) {
     setTimeout(() => banner.classList.add('hidden'), 3000);
 }
 
-function updateAchievementsList() {
-    const list = document.getElementById('achievementsList');
-    list.innerHTML = '<h3><i class="fas fa-trophy"></i> Achievements</h3>';
+function updateAchievementsList(listId = 'achievementsListModal') {
+    const list = document.getElementById(listId);
+    list.innerHTML = '';
     
     achievements.forEach(achievement => {
-        const item = document.createElement('div');
-        item.className = `achievement-item ${achievement.unlocked ? '' : 'locked'}`;
-        item.innerHTML = `
+        const achievementDiv = document.createElement('div');
+        achievementDiv.className = `achievement-item ${achievement.unlocked ? '' : 'locked'}`;
+        
+        achievementDiv.innerHTML = `
             <i class="fas fa-${achievement.icon}"></i>
-            <div>
-                <h4>${achievement.name}</h4>
-                <p>${achievement.description}</p>
+            <div class="achievement-info">
+                <div class="achievement-name">${achievement.name}</div>
+                <div class="achievement-description">${achievement.description}</div>
             </div>
+            ${achievement.unlocked ? '<i class="fas fa-check-circle" style="color: var(--primary-green);"></i>' : '<i class="fas fa-lock"></i>'}
         `;
-        list.appendChild(item);
+        
+        list.appendChild(achievementDiv);
     });
 }
 
@@ -195,13 +211,35 @@ function updateStats() {
 // Modal handling
 const statsButton = document.getElementById('statsButton');
 const statsModal = document.getElementById('statsModal');
+const achievementsButton = document.getElementById('achievementsButton');
+const achievementsModal = document.getElementById('achievementsModal');
+
 statsButton.addEventListener('click', () => {
-    statsModal.classList.add('show');
+    statsModal.style.display = 'block';
     updateStats();
 });
 
-statsModal.querySelector('.close').addEventListener('click', () => {
-    statsModal.classList.remove('show');
+achievementsButton.addEventListener('click', () => {
+    achievementsModal.style.display = 'block';
+    updateAchievementsList();
+});
+
+// Close modals
+const closeButtons = document.querySelectorAll('.close');
+closeButtons.forEach(button => {
+    button.addEventListener('click', function() {
+        const modal = this.closest('.modal');
+        if (modal) {
+            modal.style.display = 'none';
+        }
+    });
+});
+
+// Close modal when clicking outside
+window.addEventListener('click', (event) => {
+    if (event.target.classList.contains('modal')) {
+        event.target.style.display = 'none';
+    }
 });
 
 // Initialize the app
@@ -382,7 +420,7 @@ function createItemCard(item) {
 const totalBudgetElement = document.getElementById('totalBudget');
 const remainingBudgetElement = document.getElementById('remainingBudget');
 function updateBudgetDisplay() {
-    totalBudgetElement.textContent = formatCurrency(100000000000);
+    totalBudgetElement.textContent = formatCurrency(initialBudget);
     remainingBudgetElement.textContent = formatCurrency(remainingBudget);
 }
 updateBudgetDisplay();

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Choose Your Billionaire</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: #ffffff;
+            padding: 2rem;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2.5rem;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: #4CAF50;
+        }
+
+        .billionaires-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .billionaire-card {
+            background: #1a1a1a;
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            border: 1px solid #333;
+        }
+
+        .billionaire-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+            border-color: #4CAF50;
+        }
+
+        .billionaire-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin-bottom: 1rem;
+            object-fit: cover;
+            border: 3px solid #4CAF50;
+            box-shadow: 0 0 10px rgba(76, 175, 80, 0.3);
+        }
+
+        .billionaire-name {
+            color: #ffffff;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .net-worth {
+            color: #4CAF50;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+            text-shadow: 0 0 10px rgba(76, 175, 80, 0.3);
+        }
+
+        .select-button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            width: 80%;
+        }
+
+        .select-button:hover {
+            background: #45a049;
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 768px) {
+            .billionaires-grid {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Choose Your Billionaire</h1>
+    <div class="billionaires-grid">
+        <div class="billionaire-card" onclick="selectBillionaire(234000000000)">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/1/18/Mark_Zuckerberg_F8_2019_Keynote_%2832830578717%29_%28cropped%29.jpg" alt="Mark Zuckerberg" class="billionaire-image">
+            <h2 class="billionaire-name">Mark Zuckerberg</h2>
+            <p class="net-worth">Net Worth: $234 Billion</p>
+            <button class="select-button">Select</button>
+        </div>
+        <div class="billionaire-card" onclick="selectBillionaire(186000000000)">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/3/34/Elon_Musk_Royal_Society_%28crop2%29.jpg" alt="Elon Musk" class="billionaire-image">
+            <h2 class="billionaire-name">Elon Musk</h2>
+            <p class="net-worth">Net Worth: $186 Billion</p>
+            <button class="select-button">Select</button>
+        </div>
+        <div class="billionaire-card" onclick="selectBillionaire(164000000000)">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/6/67/Bill_Gates_-_2023_-_P062021-670188_%28cropped%29.jpg" alt="Bill Gates" class="billionaire-image">
+            <h2 class="billionaire-name">Bill Gates</h2>
+            <p class="net-worth">Net Worth: $164 Billion</p>
+            <button class="select-button">Select</button>
+        </div>
+        <div class="billionaire-card" onclick="selectBillionaire(177000000000)">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/Jeff_Bezos_visits_LAAFB_SMC_%283908618%29_%28cropped%29.jpeg/200px-Jeff_Bezos_visits_LAAFB_SMC_%283908618%29_%28cropped%29.jpeg" alt="Jeff Bezos" class="billionaire-image">
+            <h2 class="billionaire-name">Jeff Bezos</h2>
+            <p class="net-worth">Net Worth: $177 Billion</p>
+            <button class="select-button">Select</button>
+        </div>
+    </div>
+
+    <script>
+        function selectBillionaire(netWorth) {
+            console.log('Selected net worth:', netWorth);
+            localStorage.clear(); // Clear any old data
+            localStorage.setItem('selectedBillionaireNetWorth', netWorth.toString());
+            console.log('Stored net worth:', localStorage.getItem('selectedBillionaireNetWorth'));
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>

@@ -23,6 +23,9 @@
                 <button id="receiptButton" class="receipt-button">
                     <i class="fas fa-receipt"></i> View Receipt
                 </button>
+                <button id="achievementsButton" class="achievements-button">
+                    <i class="fas fa-trophy"></i> Achievements
+                </button>
                 <button id="statsButton" class="stats-button">
                     <i class="fas fa-chart-bar"></i> Statistics
                 </button>
@@ -93,8 +96,14 @@
                     <p id="moneySpent">$0</p>
                 </div>
             </div>
-            <div id="achievementsList" class="achievements-list">
-                <h3><i class="fas fa-trophy"></i> Achievements</h3>
+        </div>
+    </div>
+
+    <div id="achievementsModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2><i class="fas fa-trophy"></i> Achievements</h2>
+            <div id="achievementsListModal" class="achievements-list">
                 <!-- Achievements will be added dynamically -->
             </div>
         </div>
