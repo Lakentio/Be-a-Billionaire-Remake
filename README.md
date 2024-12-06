@@ -1,64 +1,103 @@
-# Spend a Billionaire's Money 💰
+# Be a Billionaire! 💰
 
-## Description
-An interactive web application inspired by the popular "Spend Bill Gates Money" concept from neal.fun. Users can explore and virtually spend budget of various billionaire on various luxury items.
+An interactive simulator that lets you experience spending a billionaire's fortune! Shop, create your own items, and have fun spending money you'll (probably) never have!
 
-## Features
-- Choose your billionaire
-- Interactive item purchasing
-- Real-time budget tracking
-- Responsive design
+## 🌟 Features
 
-## How to Run
-1. Clone the repository
-2. Open `menu.html` in your web browser
-3. Start spending!
+### Core Features
+- 💵 Choose from different billionaires and their net worth
+- 🛍️ Buy items from various categories (Tech, Vehicles, Real Estate, Entertainment)
+- 📊 Track your remaining budget in real-time
+- 🌓 Dark/light mode for better viewing
 
-## Technologies Used
+### Achievement System
+- 🏆 First Purchase: Make your first purchase
+- 💸 Big Spender: Spend over $1 billion in a single purchase
+- 🎯 Collector: Own at least one of each item
+- 📈 Halfway There: Spend 50% of your total budget
+
+### Custom Items
+- ✨ Create your own items with name, price, and image
+- 🗑️ Delete custom items you no longer want
+- 💾 Your items are automatically saved
+- 📤 Export your custom items as JSON
+- 📥 Import custom items from other users
+
+### Interface and UX
+- 🔍 Search items by name
+- 🏷️ Filter items by category
+- 🛒 Cart system with item quantity
+- 🧾 View detailed receipt of your purchases
+- 📊 Purchase and sales statistics
+- 🔔 Achievement and action notifications
+- 🎵 Sound effects for purchases and achievements
+- 💡 Fun facts about your purchase values
+
+## 🚀 How to Use
+
+1. **Billionaire Selection**
+   - Choose a billionaire on the home screen
+   - Their net worth will be your starting budget
+
+2. **Buying Items**
+   - Click an item to see details
+   - Use + and - buttons to adjust quantity
+   - Click "Buy" to purchase
+   - Watch your remaining budget update in real-time
+
+3. **Creating Custom Items**
+   - Click the "Create Item" button
+   - Fill in name, price, and category
+   - Upload an image
+   - Click "Create Item" to save
+
+4. **Managing Custom Items**
+   - Hover over a custom item to see delete button
+   - Use the "Import/Export" button to:
+     - Export your items as JSON
+     - Import items from other users
+
+5. **Additional Features**
+   - Click the 🌓 icon to toggle dark/light mode
+   - Use the search bar to find specific items
+   - Filter items by category using category buttons
+   - View your stats and achievements in header buttons
+
+## 📝 Changelog
+
+### Version 2.0.0
+- ✨ Added custom items system
+- 📤 Added import/export feature
+- 🗑️ Added option to delete custom items
+- 🎵 Added sound effects
+- 💡 Added fun facts about purchases
+- 🏷️ Improved category system
+- 🎨 Updated and modernized interface
+
+### Version 1.0.0
+- 🚀 Initial release
+- 💰 Basic purchase system
+- 🏆 Achievement system
+- 🌓 Dark/light mode
+- 🔍 Item search
+- 📊 Basic statistics
+
+## 🔧 Technologies Used
+
 - HTML5
-- CSS3
+- CSS3 with Flexbox and Grid
 - Vanilla JavaScript
+- LocalStorage for data persistence
+- FontAwesome for icons
+- Google Fonts for typography
 
-## Gameplay
-- Click "Buy" to purchase items
-- Watch your remaining budget decrease
-- Try to spend as much of the yours billions as possible!
+## 📱 Compatibility
 
-## Disclaimer
-This is a fun, fictional spending simulator. No real money is involved.
+- ✅ Desktop (Chrome, Firefox, Safari, Edge)
+- ✅ Tablets
+- ✅ Smartphones
+- ✅ Adaptive dark/light mode
 
-## Inspiration
-Inspired by the original [Spend Bill Gates Money](https://neal.fun/spend/) by Neal Agarwal
+## 🤝 Contributing
 
-## Changelog
-
-### Version 1.0.0 (Initial Release)
-- Created the basic structure of the application
-- Implemented core functionality for spending simulation
-- Added initial set of purchasable items
-- Implemented real-time budget tracking
-- Added responsive design for various screen sizes
-
-### Version 1.1.0
-- Added improved UI/UX design
-- Implemented local storage to save progress
-- Enhanced visual feedback for purchases
-- Added more luxury items to choose from
-- Improved mobile responsiveness
-
-### Version 1.2.0
-- Added item categories for better organization
-- Implemented search functionality
-- Improved performance optimizations
-- Enhanced visual animations
-
-### Version 1.3.0 (Current)
-- Added dark mode toggle functionality
-- Implemented new header features including:
-  * Receipt viewer
-  * Achievements system
-  * Statistics tracking
-- Enhanced search functionality with category filters
-- Improved UI with sticky header
-- Added Font Awesome icons for better visual feedback
-- Integrated Google Fonts (Poppins) for improved typography
+Feel free to contribute with new features, bug fixes, or documentation improvements. All contributions are welcome!
