@@ -53,6 +53,9 @@ const achievements = [
     }
 ];
 
+// Custom items storage
+let customItems = JSON.parse(localStorage.getItem('customItems')) || [];
+
 // Items data with categories
 const items = [
     {
@@ -92,6 +95,175 @@ const items = [
         category: "Entertainment"
     }
 ];
+
+// Create Item Modal
+const createItemButton = document.getElementById('createItemButton');
+const createItemModal = document.getElementById('createItemModal');
+const createItemForm = document.getElementById('createItemForm');
+const imagePreview = document.getElementById('imagePreview');
+const itemImage = document.getElementById('itemImage');
+
+// Import/Export Modal
+const importExportButton = document.getElementById('importExportButton');
+const importExportModal = document.getElementById('importExportModal');
+const exportItemsButton = document.getElementById('exportItems');
+const importItemsButton = document.getElementById('importItems');
+const importFileInput = document.getElementById('importFile');
+
+// Show create item modal
+createItemButton.addEventListener('click', () => {
+    createItemModal.style.display = 'block';
+});
+
+// Show import/export modal
+importExportButton.addEventListener('click', () => {
+    importExportModal.style.display = 'block';
+});
+
+// Close import/export modal when clicking outside
+window.addEventListener('click', (event) => {
+    if (event.target === importExportModal) {
+        importExportModal.style.display = 'none';
+    }
+});
+
+// Close button for import/export modal
+const importExportCloseButton = importExportModal.querySelector('.close');
+importExportCloseButton.addEventListener('click', () => {
+    importExportModal.style.display = 'none';
+});
+
+// Image preview
+itemImage.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            imagePreview.innerHTML = `<img src="${e.target.result}" alt="Preview">`;
+        };
+        reader.readAsDataURL(file);
+    }
+});
+
+// Handle form submission
+createItemForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const name = document.getElementById('itemName').value;
+    const price = parseFloat(document.getElementById('itemPrice').value);
+    const category = document.getElementById('itemCategory').value;
+    const imageFile = document.getElementById('itemImage').files[0];
+
+    // Convert image to base64
+    const base64Image = await new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = (e) => resolve(e.target.result);
+        reader.readAsDataURL(imageFile);
+    });
+
+    // Create new item
+    const newItem = {
+        name,
+        price,
+        category,
+        image: base64Image,
+        isCustom: true
+    };
+
+    // Add to custom items
+    customItems.push(newItem);
+    localStorage.setItem('customItems', JSON.stringify(customItems));
+
+    // Add to items array and refresh display
+    items.push(newItem);
+    renderItems(items);
+    
+    // Reset form and close modal
+    createItemForm.reset();
+    imagePreview.innerHTML = '';
+    createItemModal.style.display = 'none';
+
+    // Show success message
+    const factElement = document.createElement('div');
+    factElement.className = 'fun-fact';
+    factElement.textContent = `Successfully created "${name}"!`;
+    document.body.appendChild(factElement);
+    setTimeout(() => {
+        factElement.classList.add('fade-out');
+        setTimeout(() => factElement.remove(), 500);
+    }, 4000);
+});
+
+// Export items
+exportItemsButton.addEventListener('click', () => {
+    const dataStr = JSON.stringify(customItems, null, 2);
+    const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+    
+    const exportFileDefaultName = 'custom_items.json';
+    
+    const linkElement = document.createElement('a');
+    linkElement.setAttribute('href', dataUri);
+    linkElement.setAttribute('download', exportFileDefaultName);
+    linkElement.click();
+});
+
+// Import items button click
+importItemsButton.addEventListener('click', () => {
+    importFileInput.click();
+});
+
+// Handle import file selection
+importFileInput.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            try {
+                const importedItems = JSON.parse(e.target.result);
+                
+                // Validate imported items
+                if (!Array.isArray(importedItems)) {
+                    throw new Error('Invalid format: Expected an array of items');
+                }
+                
+                // Add imported items
+                importedItems.forEach(item => {
+                    if (!customItems.some(existing => existing.name === item.name)) {
+                        item.isCustom = true;
+                        customItems.push(item);
+                        items.push(item);
+                    }
+                });
+                
+                // Save and refresh
+                localStorage.setItem('customItems', JSON.stringify(customItems));
+                renderItems(items);
+                
+                // Show success message
+                const factElement = document.createElement('div');
+                factElement.className = 'fun-fact';
+                factElement.textContent = `Successfully imported ${importedItems.length} items!`;
+                document.body.appendChild(factElement);
+                setTimeout(() => {
+                    factElement.classList.add('fade-out');
+                    setTimeout(() => factElement.remove(), 500);
+                }, 4000);
+            } catch (error) {
+                alert('Error importing items: ' + error.message);
+            }
+        };
+        reader.readAsText(file);
+    }
+    importFileInput.value = ''; // Reset input
+});
+
+// Load custom items on startup
+window.addEventListener('load', () => {
+    const savedCustomItems = JSON.parse(localStorage.getItem('customItems')) || [];
+    customItems = savedCustomItems;
+    items.push(...savedCustomItems);
+    renderItems(items);
+});
 
 // Dark mode toggle
 const darkModeToggle = document.getElementById('darkModeToggle');
@@ -166,6 +338,7 @@ function checkAchievements() {
 
     unlockedAchievements.forEach(achievement => showAchievementBanner(achievement));
     updateAchievementsList();
+    return unlockedAchievements.length > 0 ? unlockedAchievements[0] : null;
 }
 
 function showAchievementBanner(achievement) {
@@ -262,11 +435,38 @@ function renderItems(items) {
 
 function createItemCard(item) {
     const card = document.createElement('div');
-    card.classList.add('item-card');
+    card.className = 'item-card';
     
-    const img = document.createElement('img');
-    img.src = item.image;
-    img.alt = item.name;
+    // Add custom item indicator if it's a custom item
+    if (item.isCustom) {
+        card.classList.add('custom-item');
+    }
+
+    const imageContainer = document.createElement('div');
+    imageContainer.className = 'item-image-container';
+    
+    const image = document.createElement('img');
+    image.src = item.image;
+    image.alt = item.name;
+    image.className = 'item-image';
+    
+    // Add delete button for custom items
+    if (item.isCustom) {
+        const deleteButton = document.createElement('button');
+        deleteButton.className = 'delete-button';
+        deleteButton.innerHTML = '<i class="fas fa-trash"></i>';
+        deleteButton.title = 'Delete Item';
+        deleteButton.onclick = (e) => {
+            e.stopPropagation(); // Prevent card click
+            if (confirm(`Are you sure you want to delete "${item.name}"?`)) {
+                deleteCustomItem(item);
+            }
+        };
+        imageContainer.appendChild(deleteButton);
+    }
+    
+    imageContainer.appendChild(image);
+    card.appendChild(imageContainer);
     
     const infoDiv = document.createElement('div');
     infoDiv.classList.add('item-info');
@@ -295,7 +495,7 @@ function createItemCard(item) {
         sellButton.disabled = true;
     }
     
-    buyButton.addEventListener('click', (event) => {
+    buyButton.addEventListener('click', () => {
         if (remainingBudget >= item.price) {
             const rect = buyButton.getBoundingClientRect();
             const x = rect.left + rect.width / 2;
@@ -339,8 +539,17 @@ function createItemCard(item) {
                 stats.itemsPurchased.set(item.name, 1);
             }
             
-            // Check achievements
-            checkAchievements();
+            // Play purchase sound
+            sounds.purchase.play();
+            
+            // Show fun fact
+            showFunFact(item.price);
+            
+            // Check achievements with sound
+            const newAchievement = checkAchievements();
+            if (newAchievement) {
+                sounds.achievement.play();
+            }
         }
     });
     
@@ -410,10 +619,37 @@ function createItemCard(item) {
     infoDiv.appendChild(buttonsRow);
     infoDiv.appendChild(quantityDisplay);
     
-    card.appendChild(img);
     card.appendChild(infoDiv);
     
     return card;
+}
+
+// Function to delete custom item
+function deleteCustomItem(item) {
+    // Remove from customItems array
+    customItems = customItems.filter(customItem => customItem.name !== item.name);
+    
+    // Remove from items array
+    const itemIndex = items.findIndex(i => i.name === item.name);
+    if (itemIndex > -1) {
+        items.splice(itemIndex, 1);
+    }
+    
+    // Update localStorage
+    localStorage.setItem('customItems', JSON.stringify(customItems));
+    
+    // Re-render items
+    renderItems(items);
+    
+    // Show success message
+    const factElement = document.createElement('div');
+    factElement.className = 'fun-fact';
+    factElement.textContent = `"${item.name}" has been deleted!`;
+    document.body.appendChild(factElement);
+    setTimeout(() => {
+        factElement.classList.add('fade-out');
+        setTimeout(() => factElement.remove(), 500);
+    }, 4000);
 }
 
 // Initialize the display
@@ -429,7 +665,6 @@ updateBudgetDisplay();
 function animateMoneyDecrease(amount, x, y) {
     const element = document.createElement('div');
     element.className = 'money-decrease';
-    element.textContent = `-${formatCurrency(amount)}`;
     element.style.left = `${x}px`;
     element.style.top = `${y}px`;
     document.body.appendChild(element);
@@ -482,6 +717,48 @@ function formatCurrency(amount) {
         currency: 'USD',
         maximumFractionDigits: 0
     }).format(amount);
+}
+
+// Sound effects
+const sounds = {
+    purchase: new Audio('https://assets.mixkit.co/active_storage/sfx/2058/2058-preview.mp3'),
+    achievement: new Audio('https://assets.mixkit.co/active_storage/sfx/1435/1435-preview.mp3'),
+};
+
+// Random fun facts about money
+const funFacts = [
+    "This amount could buy {number} average homes in the US!",
+    "You could pay for {number} college students' tuition with this money!",
+    "This is equivalent to {number} years of average salary!",
+    "You could buy {number} Tesla Model 3s with this amount!",
+];
+
+function showFunFact(amount) {
+    const fact = funFacts[Math.floor(Math.random() * funFacts.length)];
+    let number;
+    
+    // Calculate relevant numbers based on the amount
+    if (fact.includes("homes")) {
+        number = Math.round(amount / 400000); // Average home price
+    } else if (fact.includes("college")) {
+        number = Math.round(amount / 35000); // Average yearly tuition
+    } else if (fact.includes("salary")) {
+        number = Math.round(amount / 50000); // Average yearly salary
+    } else if (fact.includes("Tesla")) {
+        number = Math.round(amount / 40000); // Tesla Model 3 price
+    }
+    
+    const formattedFact = fact.replace("{number}", number.toLocaleString());
+    
+    const factElement = document.createElement('div');
+    factElement.className = 'fun-fact';
+    factElement.textContent = formattedFact;
+    document.body.appendChild(factElement);
+    
+    setTimeout(() => {
+        factElement.classList.add('fade-out');
+        setTimeout(() => factElement.remove(), 500);
+    }, 4000);
 }
 
 // Generate receipt

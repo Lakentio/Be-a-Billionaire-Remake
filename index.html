@@ -20,6 +20,12 @@
                 <span class="amount" id="remainingBudget">$100,000,000,000</span>
             </div>
             <div class="header-buttons">
+                <button id="createItemButton" class="create-item-button">
+                    <i class="fas fa-plus"></i> Create Item
+                </button>
+                <button id="importExportButton" class="import-export-button">
+                    <i class="fas fa-file-import"></i> Import/Export
+                </button>
                 <button id="receiptButton" class="receipt-button">
                     <i class="fas fa-receipt"></i> View Receipt
                 </button>
@@ -105,6 +111,58 @@
             <h2><i class="fas fa-trophy"></i> Achievements</h2>
             <div id="achievementsListModal" class="achievements-list">
                 <!-- Achievements will be added dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Item Modal -->
+    <div id="createItemModal" class="modal">
+        <div class="modal-content create-item-modal">
+            <span class="close">&times;</span>
+            <h2>Create Custom Item</h2>
+            <form id="createItemForm">
+                <div class="form-group">
+                    <label for="itemName">Item Name:</label>
+                    <input type="text" id="itemName" required>
+                </div>
+                <div class="form-group">
+                    <label for="itemPrice">Price ($):</label>
+                    <input type="number" id="itemPrice" min="0" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="itemCategory">Category:</label>
+                    <select id="itemCategory" required>
+                        <option value="">Select a category</option>
+                        <option value="Tech">Tech</option>
+                        <option value="Vehicles">Vehicles</option>
+                        <option value="Real Estate">Real Estate</option>
+                        <option value="Entertainment">Entertainment</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="itemImage">Image:</label>
+                    <input type="file" id="itemImage" accept="image/*" required>
+                    <div id="imagePreview" class="image-preview"></div>
+                </div>
+                <button type="submit" class="submit-button">Create Item</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Import/Export Modal -->
+    <div id="importExportModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Import/Export Items</h2>
+            <div class="import-export-buttons">
+                <button id="exportItems" class="export-button">
+                    <i class="fas fa-file-export"></i> Export Items
+                </button>
+                <button id="importItems" class="import-button">
+                    <i class="fas fa-file-import"></i> Import Items
+                </button>
+                <input type="file" id="importFile" accept=".json" style="display: none;">
             </div>
         </div>
     </div>

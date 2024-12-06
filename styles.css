@@ -131,12 +131,48 @@ body {
     box-shadow: var(--hover-shadow);
 }
 
-.item-card img {
+.item-image-container {
+    position: relative;
     width: 100%;
-    height: 200px;
-    object-fit: contain;
-    background-color: var(--white);
-    padding: 1rem;
+    padding-top: 56.25%; /* 16:9 Aspect Ratio */
+    overflow: hidden;
+}
+
+.item-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.delete-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: rgba(220, 53, 69, 0.9);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 2;
+    transition: all 0.3s ease;
+    opacity: 0;
+}
+
+.item-card:hover .delete-button {
+    opacity: 1;
+}
+
+.delete-button:hover {
+    background-color: rgb(220, 53, 69);
+    transform: scale(1.1);
 }
 
 .item-info {
@@ -517,6 +553,195 @@ body {
         opacity: 0;
         transform: translateY(-50px);
     }
+}
+
+/* Fun Facts */
+.fun-fact {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 15px 25px;
+    border-radius: 8px;
+    font-size: 16px;
+    z-index: 1001;
+    animation: slideIn 0.5s ease-out;
+    max-width: 300px;
+}
+
+.fun-fact.fade-out {
+    animation: fadeOut 0.5s ease-out forwards;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    to {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+}
+
+/* Create Item Button */
+.create-item-button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.3s;
+}
+
+.create-item-button:hover {
+    background-color: #45a049;
+}
+
+/* Create Item Modal */
+.create-item-modal {
+    max-width: 500px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.form-group input[type="file"] {
+    border: none;
+    padding: 0;
+}
+
+.image-preview {
+    margin-top: 10px;
+    max-width: 200px;
+    max-height: 200px;
+    border: 2px dashed #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.image-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.submit-button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 100%;
+    transition: background-color 0.3s;
+}
+
+.submit-button:hover {
+    background-color: #45a049;
+}
+
+/* Import/Export Buttons */
+.import-export-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.export-button,
+.import-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.3s;
+}
+
+.export-button {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.import-button {
+    background-color: #2196F3;
+    color: white;
+}
+
+.export-button:hover {
+    background-color: #45a049;
+}
+
+.import-button:hover {
+    background-color: #1976D2;
+}
+
+/* Import/Export Button */
+.import-export-button {
+    background-color: #2196F3;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.3s;
+}
+
+.import-export-button:hover {
+    background-color: #1976D2;
+}
+
+.custom-item {
+    position: relative;
+}
+
+.custom-item::before {
+    content: 'Custom';
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: rgba(33, 150, 243, 0.9);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    z-index: 2;
 }
 
 @media (max-width: 768px) {
