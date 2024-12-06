@@ -11,7 +11,7 @@ An interactive web application inspired by the popular "Spend Bill Gates Money" 
 
 ## How to Run
 1. Clone the repository
-2. Open `index.html` in your web browser
+2. Open `menu.html` in your web browser
 3. Start spending!
 
 ## Technologies Used
@@ -22,7 +22,7 @@ An interactive web application inspired by the popular "Spend Bill Gates Money" 
 ## Gameplay
 - Click "Buy" to purchase items
 - Watch your remaining budget decrease
-- Try to spend as much of the $100 billion as possible!
+- Try to spend as much of the yours billions as possible!
 
 ## Disclaimer
 This is a fun, fictional spending simulator. No real money is involved.
