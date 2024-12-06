@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spend Billionaire Money</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <header class="sticky-header">
+        <div class="budget-info">
+            <div class="total-section">
+                <span class="label">Total Budget:</span>
+                <span class="amount" id="totalBudget">$100,000,000,000</span>
+            </div>
+            <div class="remaining-section">
+                <span class="label">Remaining:</span>
+                <span class="amount" id="remainingBudget">$100,000,000,000</span>
+            </div>
+            <div class="header-buttons">
+                <button id="receiptButton" class="receipt-button">
+                    <i class="fas fa-receipt"></i> View Receipt
+                </button>
+                <button id="statsButton" class="stats-button">
+                    <i class="fas fa-chart-bar"></i> Statistics
+                </button>
+                <button id="darkModeToggle" class="dark-mode-button">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <h1 class="title">Spend a Fortune!</h1>
+        
+        <div class="search-section">
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Search items...">
+                <i class="fas fa-search search-icon"></i>
+            </div>
+            <div class="category-filters" id="categoryFilters">
+                <!-- Categories will be added dynamically -->
+            </div>
+        </div>
+
+        <div class="items-container" id="itemsGrid">
+            <!-- Items will be dynamically added here -->
+        </div>
+
+        <div id="achievements" class="achievements-banner hidden">
+            <i class="fas fa-trophy"></i>
+            <span class="achievement-text"></span>
+        </div>
+    </main>
+
+    <div id="receiptModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2><i class="fas fa-receipt"></i> Receipt</h2>
+            <div id="receiptContent"></div>
+            <div class="receipt-total">
+                <p>Total Spent: <span id="totalSpent"></span></p>
+            </div>
+        </div>
+    </div>
+
+    <div id="statsModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2><i class="fas fa-chart-bar"></i> Statistics</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <i class="fas fa-shopping-cart"></i>
+                    <h3>Total Purchases</h3>
+                    <p id="totalPurchases">0</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-exchange-alt"></i>
+                    <h3>Total Sales</h3>
+                    <p id="totalSales">0</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-tag"></i>
+                    <h3>Most Bought Item</h3>
+                    <p id="mostBoughtItem">None</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-money-bill-wave"></i>
+                    <h3>Money Spent</h3>
+                    <p id="moneySpent">$0</p>
+                </div>
+            </div>
+            <div id="achievementsList" class="achievements-list">
+                <h3><i class="fas fa-trophy"></i> Achievements</h3>
+                <!-- Achievements will be added dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>How would you spend a billionaire's fortune?</p>
+        <div class="social-links">
+            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
