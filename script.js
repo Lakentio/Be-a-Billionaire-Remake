@@ -675,12 +675,6 @@ function deleteCustomItem(item) {
 
 // Function to edit custom item
 async function editCustomItem(item) {
-    // Get modal elements
-    const editItemModal = document.getElementById('editItemModal');
-    const editItemForm = document.getElementById('editItemForm');
-    const editImagePreview = document.getElementById('editImagePreview');
-    const editItemImage = document.getElementById('editItemImage');
-
     // Populate form with current values
     document.getElementById('editItemOriginalName').value = item.name;
     document.getElementById('editItemName').value = item.name;
@@ -695,7 +689,6 @@ async function editCustomItem(item) {
 }
 
 // Close edit modal when clicking outside
-const editItemModal = document.getElementById('editItemModal');
 window.addEventListener('click', (event) => {
     if (event.target === editItemModal) {
         editItemModal.style.display = 'none';
@@ -709,8 +702,6 @@ editModalCloseButton.addEventListener('click', () => {
 });
 
 // Edit image preview
-const editItemImage = document.getElementById('editItemImage');
-const editImagePreview = document.getElementById('editImagePreview');
 editItemImage.addEventListener('change', (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -723,7 +714,6 @@ editItemImage.addEventListener('change', (e) => {
 });
 
 // Handle edit form submission
-const editItemForm = document.getElementById('editItemForm');
 editItemForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     
@@ -767,12 +757,26 @@ editItemForm.addEventListener('submit', async (e) => {
     customItems[customItemIndex] = updatedItem;
     items[itemIndex] = updatedItem;
 
-    // Save to localStorage
+    // Update localStorage
     localStorage.setItem('customItems', JSON.stringify(customItems));
 
-    // Close modal and refresh display
-    editItemModal.style.display = 'none';
+    // Refresh display
     renderItems(items);
+    
+    // Reset form and close modal
+    editItemForm.reset();
+    editImagePreview.innerHTML = '';
+    editItemModal.style.display = 'none';
+
+    // Show success message
+    const factElement = document.createElement('div');
+    factElement.className = 'fun-fact';
+    factElement.textContent = `Successfully updated "${name}"!`;
+    document.body.appendChild(factElement);
+    setTimeout(() => {
+        factElement.classList.add('fade-out');
+        setTimeout(() => factElement.remove(), 500);
+    }, 4000);
 });
 
 // Initialize the display
