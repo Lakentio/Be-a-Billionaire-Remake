@@ -110,6 +110,12 @@ const exportItemsButton = document.getElementById('exportItems');
 const importItemsButton = document.getElementById('importItems');
 const importFileInput = document.getElementById('importFile');
 
+// Edit Item Modal
+const editItemModal = document.getElementById('editItemModal');
+const editItemForm = document.getElementById('editItemForm');
+const editImagePreview = document.getElementById('editImagePreview');
+const editItemImage = document.getElementById('editItemImage');
+
 // Show create item modal
 createItemButton.addEventListener('click', () => {
     createItemModal.style.display = 'block';
@@ -450,19 +456,34 @@ function createItemCard(item) {
     image.alt = item.name;
     image.className = 'item-image';
     
-    // Add delete button for custom items
+    // Add edit and delete buttons for custom items
     if (item.isCustom) {
+        const buttonContainer = document.createElement('div');
+        buttonContainer.className = 'custom-item-buttons';
+        
+        const editButton = document.createElement('button');
+        editButton.className = 'edit-button';
+        editButton.innerHTML = '<i class="fas fa-edit"></i>';
+        editButton.title = 'Edit Item';
+        editButton.onclick = (e) => {
+            e.stopPropagation();
+            editCustomItem(item);
+        };
+        
         const deleteButton = document.createElement('button');
         deleteButton.className = 'delete-button';
         deleteButton.innerHTML = '<i class="fas fa-trash"></i>';
         deleteButton.title = 'Delete Item';
         deleteButton.onclick = (e) => {
-            e.stopPropagation(); // Prevent card click
+            e.stopPropagation();
             if (confirm(`Are you sure you want to delete "${item.name}"?`)) {
                 deleteCustomItem(item);
             }
         };
-        imageContainer.appendChild(deleteButton);
+        
+        buttonContainer.appendChild(editButton);
+        buttonContainer.appendChild(deleteButton);
+        imageContainer.appendChild(buttonContainer);
     }
     
     imageContainer.appendChild(image);
@@ -651,6 +672,112 @@ function deleteCustomItem(item) {
         setTimeout(() => factElement.remove(), 500);
     }, 4000);
 }
+
+// Function to edit custom item
+async function editCustomItem(item) {
+    // Populate form with current values
+    document.getElementById('editItemOriginalName').value = item.name;
+    document.getElementById('editItemName').value = item.name;
+    document.getElementById('editItemPrice').value = item.price;
+    document.getElementById('editItemCategory').value = item.category;
+    
+    // Show current image
+    editImagePreview.innerHTML = `<img src="${item.image}" alt="Current Image">`;
+    
+    // Show modal
+    editItemModal.style.display = 'block';
+}
+
+// Close edit modal when clicking outside
+window.addEventListener('click', (event) => {
+    if (event.target === editItemModal) {
+        editItemModal.style.display = 'none';
+    }
+});
+
+// Close button for edit modal
+const editModalCloseButton = editItemModal.querySelector('.close');
+editModalCloseButton.addEventListener('click', () => {
+    editItemModal.style.display = 'none';
+});
+
+// Edit image preview
+editItemImage.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            editImagePreview.innerHTML = `<img src="${e.target.result}" alt="Preview">`;
+        };
+        reader.readAsDataURL(file);
+    }
+});
+
+// Handle edit form submission
+editItemForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const originalName = document.getElementById('editItemOriginalName').value;
+    const name = document.getElementById('editItemName').value;
+    const price = parseFloat(document.getElementById('editItemPrice').value);
+    const category = document.getElementById('editItemCategory').value;
+    const imageFile = document.getElementById('editItemImage').files[0];
+
+    // Find item in arrays
+    const customItemIndex = customItems.findIndex(item => item.name === originalName);
+    const itemIndex = items.findIndex(item => item.name === originalName);
+
+    if (customItemIndex === -1 || itemIndex === -1) {
+        alert('Error: Item not found');
+        return;
+    }
+
+    // Get image (either new or keep existing)
+    let imageData;
+    if (imageFile) {
+        imageData = await new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onload = (e) => resolve(e.target.result);
+            reader.readAsDataURL(imageFile);
+        });
+    } else {
+        imageData = customItems[customItemIndex].image;
+    }
+
+    // Create updated item
+    const updatedItem = {
+        name,
+        price,
+        category,
+        image: imageData,
+        isCustom: true
+    };
+
+    // Update arrays
+    customItems[customItemIndex] = updatedItem;
+    items[itemIndex] = updatedItem;
+
+    // Update localStorage
+    localStorage.setItem('customItems', JSON.stringify(customItems));
+
+    // Refresh display
+    renderItems(items);
+    
+    // Reset form and close modal
+    editItemForm.reset();
+    editImagePreview.innerHTML = '';
+    editItemModal.style.display = 'none';
+
+    // Show success message
+    const factElement = document.createElement('div');
+    factElement.className = 'fun-fact';
+    factElement.textContent = `Successfully updated "${name}"!`;
+    document.body.appendChild(factElement);
+    setTimeout(() => {
+        factElement.classList.add('fade-out');
+        setTimeout(() => factElement.remove(), 500);
+    }, 4000);
+});
 
 // Initialize the display
 const totalBudgetElement = document.getElementById('totalBudget');
