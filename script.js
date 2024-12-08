@@ -612,6 +612,7 @@ function init() {
     updateAchievementsList();
     optimizeTouchInteractions();
     addTouchFeedback();
+    initializeMobileMenu();
 }
 
 // Mobile and Touch Device Optimizations
@@ -649,6 +650,41 @@ function addTouchFeedback() {
         
         el.addEventListener('touchcancel', function() {
             this.classList.remove('touch-active');
+        });
+    });
+}
+
+// Mobile Menu Toggle Functionality
+function initializeMobileMenu() {
+    const headerButtons = document.querySelector('.header-buttons');
+    const mobileMenuToggle = document.createElement('button');
+    mobileMenuToggle.classList.add('mobile-menu-toggle');
+    mobileMenuToggle.innerHTML = '☰ Menu';
+    
+    // Insert the mobile menu toggle button
+    const header = document.querySelector('.header');
+    if (header && !document.querySelector('.mobile-menu-toggle')) {
+        header.insertBefore(mobileMenuToggle, header.firstChild);
+    }
+
+    // Toggle menu functionality
+    mobileMenuToggle.addEventListener('click', function() {
+        if (headerButtons) {
+            headerButtons.classList.toggle('active');
+            
+            // Toggle button text
+            this.innerHTML = headerButtons.classList.contains('active') 
+                ? '✕ Close' 
+                : '☰ Menu';
+        }
+    });
+
+    // Close menu when a button is clicked
+    const menuButtons = headerButtons.querySelectorAll('button');
+    menuButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            headerButtons.classList.remove('active');
+            mobileMenuToggle.innerHTML = '☰ Menu';
         });
     });
 }
