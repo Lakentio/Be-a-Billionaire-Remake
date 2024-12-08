@@ -610,9 +610,6 @@ function init() {
     initializeCategories();
     renderItems(items);
     updateAchievementsList();
-    initializeMobileFeatures();
-    enhanceTouchInteractions();
-    registerServiceWorker();
 }
 
 // Items grid
@@ -1066,95 +1063,6 @@ function createConfetti() {
 function getRandomColor() {
     const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#f9d56e', '#ff9ff3'];
     return colors[Math.floor(Math.random() * colors.length)];
-}
-
-// Add mobile-specific initialization and event listeners
-function initializeMobileFeatures() {
-    // Bottom Navigation Handling
-    const bottomNavButtons = document.querySelectorAll('.nav-btn');
-    bottomNavButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            const view = button.getAttribute('data-view');
-            switchMobileView(view);
-        });
-    });
-
-    // Search Input Mobile Optimization
-    const searchInput = document.getElementById('search-input');
-    const searchBtn = document.getElementById('search-btn');
-    
-    searchInput.addEventListener('focus', () => {
-        // Prevent zoom on iOS
-        document.querySelector('meta[name="viewport"]').setAttribute(
-            'content', 
-            'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'
-        );
-    });
-
-    searchInput.addEventListener('blur', () => {
-        // Restore original viewport
-        document.querySelector('meta[name="viewport"]').setAttribute(
-            'content', 
-            'width=device-width, initial-scale=1.0'
-        );
-    });
-
-    // Prevent double-tap zoom on buttons
-    const buttons = document.querySelectorAll('button');
-    buttons.forEach(button => {
-        button.addEventListener('touchend', (e) => {
-            e.preventDefault();
-        });
-    });
-}
-
-function switchMobileView(view) {
-    // Logic to switch between different mobile views
-    switch(view) {
-        case 'items':
-            document.getElementById('items-grid').style.display = 'grid';
-            // Hide other views
-            break;
-        case 'achievements':
-            // Show achievements view
-            break;
-        case 'settings':
-            // Show settings view
-            break;
-    }
-}
-
-// Enhance touch interactions
-function enhanceTouchInteractions() {
-    // Add touch feedback to interactive elements
-    const touchElements = document.querySelectorAll('.item-card, .nav-btn, .category-btn');
-    
-    touchElements.forEach(element => {
-        element.addEventListener('touchstart', () => {
-            element.classList.add('touch-active');
-        });
-        
-        element.addEventListener('touchend', () => {
-            element.classList.remove('touch-active');
-        });
-        
-        element.addEventListener('touchcancel', () => {
-            element.classList.remove('touch-active');
-        });
-    });
-}
-
-// Progressive Web App (PWA) Support
-function registerServiceWorker() {
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/service-worker.js')
-            .then(registration => {
-                console.log('Service Worker registered successfully:', registration);
-            })
-            .catch(error => {
-                console.log('Service Worker registration failed:', error);
-            });
-    }
 }
 
 init();
