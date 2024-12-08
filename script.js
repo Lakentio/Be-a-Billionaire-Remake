@@ -56,8 +56,9 @@ const achievements = [
 // Custom items storage
 let customItems = JSON.parse(localStorage.getItem('customItems')) || [];
 
-// Items data with categories
+// Expand items array with more diverse items
 const items = [
+    // Tech
     {
         name: "iPhone 14 Pro",
         price: 999,
@@ -65,16 +66,42 @@ const items = [
         category: "Tech"
     },
     {
+        name: "MacBook Pro M2",
+        price: 2499,
+        image: 'assets/macbook.webp',
+        category: "Tech"
+    },
+    {
+        name: "Samsung Galaxy Fold",
+        price: 1799,
+        image: 'assets/galaxyfold.png',
+        category: "Tech"
+    },
+    {
+        name: "Gaming PC Custom",
+        price: 5000,
+        image: 'assets/gamingpc.png',
+        category: "Tech"
+    },
+    {
+        name: "Drone DJI Mavic",
+        price: 1299,
+        image: 'assets/drone.webp',
+        category: "Tech"
+    },
+    {
+        name: "Virtual Reality Set",
+        price: 799,
+        image: 'assets/vr.jpg',
+        category: "Tech"
+    },
+    
+    // Vehicles
+    {
         name: "Tesla Model S",
         price: 94900,
         image: 'assets/teslamodel.webp',
         category: "Vehicles"
-    },
-    {
-        name: "Private Island",
-        price: 50000000,
-        image: 'assets/island.jpg',
-        category: "Real Estate"
     },
     {
         name: "Luxury Yacht",
@@ -89,10 +116,124 @@ const items = [
         category: "Vehicles"
     },
     {
+        name: "Rolls-Royce Phantom",
+        price: 450000,
+        image: 'assets/rollsroyce.webp',
+        category: "Vehicles"
+    },
+    {
+        name: "Lamborghini Aventador",
+        price: 400000,
+        image: 'assets/lamborghini.jpg',
+        category: "Vehicles"
+    },
+    {
+        name: "Helicopter",
+        price: 2500000,
+        image: 'assets/helicopter.jpg',
+        category: "Vehicles"
+    },
+    
+    // Real Estate
+    {
+        name: "Private Island",
+        price: 50000000,
+        image: 'assets/island.jpg',
+        category: "Real Estate"
+    },
+    {
+        name: "Mansion in Beverly Hills",
+        price: 25000000,
+        image: 'assets/mansion.jpg',
+        category: "Real Estate"
+    },
+    {
+        name: "Penthouse in New York",
+        price: 15000000,
+        image: 'assets/penthouse.jpg',
+        category: "Real Estate"
+    },
+    {
+        name: "Castle in Europe",
+        price: 10000000,
+        image: 'assets/castle.jpg',
+        category: "Real Estate"
+    },
+    {
+        name: "Beach House",
+        price: 5000000,
+        image: 'assets/beachhouse.avif',
+        category: "Real Estate"
+    },
+    {
+        name: "Ski Chalet",
+        price: 3000000,
+        image: 'assets/skichalet.webp',
+        category: "Real Estate"
+    },
+    
+    // Entertainment
+    {
         name: "NBA Team",
         price: 2400000000,
         image: 'assets/nba.png',
         category: "Entertainment"
+    },
+    {
+        name: "Movie Studio",
+        price: 500000000,
+        image: 'assets/moviestudio.jpeg',
+        category: "Entertainment"
+    },
+    {
+        name: "Music Label",
+        price: 200000000,
+        image: 'assets/musiclabel.jpeg',
+        category: "Entertainment"
+    },
+    {
+        name: "Private Concert",
+        price: 5000000,
+        image: 'assets/privateconcert.avif',
+        category: "Entertainment"
+    },
+    {
+        name: "Theme Park",
+        price: 100000000,
+        image: 'assets/themepark.webp',
+        category: "Entertainment"
+    },
+    {
+        name: "Esports Team",
+        price: 50000000,
+        image: 'assets/esports.jpg',
+        category: "Entertainment"
+    },
+    
+    // Food & Dining
+    {
+        name: "Michelin Star Restaurant",
+        price: 10000000,
+        image: 'assets/michelinrestaurant.webp',
+        category: "Food & Dining"
+    },
+    {
+        name: "Personal Chef",
+        price: 500000,
+        image: 'assets/personalchef.jpeg',
+        category: "Food & Dining"
+    },
+    {
+        name: "Rare Wine Collection",
+        price: 1000000,
+        image: 'assets/winecollection.webp',
+        category: "Food & Dining"
+    },
+    {
+        name: "Gourmet Catering Service",
+        price: 250000,
+        image: 'assets/catering.jpg',
+        category: "Food & Dining"
     }
 ];
 
@@ -145,9 +286,11 @@ itemImage.addEventListener('change', (e) => {
     if (file) {
         const reader = new FileReader();
         reader.onload = (e) => {
-            imagePreview.innerHTML = `<img src="${e.target.result}" alt="Preview">`;
+            imagePreview.innerHTML = `<img src="${e.target.result}" alt="Imagem selecionada" style="max-width: 100%; max-height: 200px; object-fit: contain;">`;
         };
         reader.readAsDataURL(file);
+    } else {
+        imagePreview.innerHTML = '<span>Nenhuma imagem selecionada</span>';
     }
 });
 
@@ -442,11 +585,11 @@ achievementsButton.addEventListener('click', () => {
     updateAchievementsList();
 });
 
-// Close modals
-const closeButtons = document.querySelectorAll('.close');
-closeButtons.forEach(button => {
-    button.addEventListener('click', function() {
-        const modal = this.closest('.modal');
+// Modal closing script
+document.querySelectorAll('.close').forEach(closeBtn => {
+    closeBtn.addEventListener('click', function() {
+        const modalId = this.getAttribute('data-modal');
+        const modal = document.getElementById(modalId);
         if (modal) {
             modal.style.display = 'none';
         }
@@ -454,10 +597,12 @@ closeButtons.forEach(button => {
 });
 
 // Close modal when clicking outside
-window.addEventListener('click', (event) => {
-    if (event.target.classList.contains('modal')) {
-        event.target.style.display = 'none';
-    }
+document.querySelectorAll('.modal').forEach(modal => {
+    modal.addEventListener('click', function(event) {
+        if (event.target === this) {
+            this.style.display = 'none';
+        }
+    });
 });
 
 // Initialize the app

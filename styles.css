@@ -442,6 +442,29 @@ body {
     overflow-y: auto;
 }
 
+.close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 1.5rem;
+    font-weight: 300;
+    color: #888;
+    cursor: pointer;
+    user-select: none;
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+    display: inline;
+    line-height: 1;
+    text-decoration: none;
+    pointer-events: auto;
+}
+
+.close:hover {
+    opacity: 1;
+    color: #333;
+    cursor: pointer;
+}
+
 .search-section {
     max-width: 800px;
     margin: 0 auto 2rem;
@@ -875,6 +898,56 @@ body {
 
 .delete-item-btn:hover {
     background-color: var(--dark-red);
+}
+
+/* Custom File Input Styling */
+#itemImage {
+    display: none; /* Hide the default file input */
+}
+
+.file-upload-wrapper {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.file-upload-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: var(--button-background);
+    color: var(--button-text);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-align: center;
+    width: 100%;
+}
+
+.file-upload-button:hover {
+    background-color: var(--button-hover-background);
+}
+
+.file-upload-button i {
+    margin-right: 10px;
+}
+
+.file-upload-text {
+    margin-left: 10px;
+    color: var(--text-secondary-color);
+    font-size: 0.9rem;
+}
+
+.image-preview {
+    margin-top: 10px;
+    max-width: 200px;
+    max-height: 200px;
+    border: 2px dashed var(--light-green);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 10px;
 }
 
 @media (max-width: 480px) {

@@ -82,7 +82,7 @@
 
     <div id="receiptModal" class="modal">
         <div class="modal-content">
-            <span class="close">&times;</span>
+            <span class="close" data-modal="receiptModal">&times;</span>
             <h2><i class="fas fa-receipt"></i> Receipt</h2>
             <div id="receiptContent"></div>
             <div class="receipt-total">
@@ -93,7 +93,7 @@
 
     <div id="statsModal" class="modal">
         <div class="modal-content">
-            <span class="close">&times;</span>
+            <span class="close" data-modal="statsModal">&times;</span>
             <h2><i class="fas fa-chart-bar"></i> Statistics</h2>
             <div class="stats-grid">
                 <div class="stat-card">
@@ -122,7 +122,7 @@
 
     <div id="achievementsModal" class="modal">
         <div class="modal-content">
-            <span class="close">&times;</span>
+            <span class="close" data-modal="achievementsModal">&times;</span>
             <h2><i class="fas fa-trophy"></i> Achievements</h2>
             <div id="achievementsListModal" class="achievements-list">
                 <!-- Achievements will be added dynamically -->
@@ -133,7 +133,7 @@
     <!-- Create Item Modal -->
     <div id="createItemModal" class="modal">
         <div class="modal-content create-item-modal">
-            <span class="close">&times;</span>
+            <span class="close" data-modal="createItemModal">&times;</span>
             <h2>Create Custom Item</h2>
             <form id="createItemForm">
                 <div class="form-group">
@@ -152,13 +152,21 @@
                         <option value="Vehicles">Vehicles</option>
                         <option value="Real Estate">Real Estate</option>
                         <option value="Entertainment">Entertainment</option>
+                        <option value="Food & Dining">Food & Dining</option>
                         <option value="Other">Other</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="itemImage">Image:</label>
-                    <input type="file" id="itemImage" accept="image/*" required>
-                    <div id="imagePreview" class="image-preview"></div>
+                    <div class="file-upload-wrapper">
+                        <input type="file" id="itemImage" accept="image/*" required>
+                        <label for="itemImage" class="file-upload-button">
+                            <i class="fas fa-upload"></i>Procurar Imagem
+                        </label>
+                    </div>
+                    <div id="imagePreview" class="image-preview">
+                        <span>Nenhuma imagem selecionada</span>
+                    </div>
                 </div>
                 <button type="submit" class="submit-button">Create Item</button>
             </form>
@@ -168,7 +176,7 @@
     <!-- Import/Export Modal -->
     <div id="importExportModal" class="modal">
         <div class="modal-content">
-            <span class="close">&times;</span>
+            <span class="close" data-modal="importExportModal">&times;</span>
             <h2>Import/Export Items</h2>
             <div class="import-export-buttons">
                 <button id="exportItems" class="export-button">
