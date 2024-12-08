@@ -26,12 +26,10 @@ An interactive simulator that lets you experience spending a billionaire's fortu
 ### Interface and UX
 - 🔍 Search items by name
 - 🏷️ Filter items by category
-- 🛒 Cart system with item quantity
 - 🧾 View detailed receipt of your purchases
 - 📊 Purchase and sales statistics
 - 🔔 Achievement and action notifications
 - 🎵 Sound effects for purchases and achievements
-- 💡 Fun facts about your purchase values
 
 ## 🚀 How to Use
 

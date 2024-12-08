@@ -375,6 +375,46 @@ function updateAchievementsList(listId = 'achievementsListModal') {
     });
 }
 
+// Sound Management
+const soundEffects = {
+    buy: {
+        small: new Audio('audio/coins_small.wav'),
+        medium: new Audio('audio/coins_medium.wav'),
+        big: new Audio('audio/coins_big.wav')
+    },
+    sell: {
+        small: new Audio('audio/coins_small.wav'),
+        medium: new Audio('audio/coins_medium.wav'),
+        big: new Audio('audio/coins_big.wav')
+    }
+};
+
+let isSoundEnabled = true;
+
+function toggleSound() {
+    isSoundEnabled = !isSoundEnabled;
+    localStorage.setItem('soundEnabled', isSoundEnabled);
+}
+
+function getSoundCategory(amount) {
+    if (amount < 1000) return 'small';
+    if (amount < 10000) return 'medium';
+    return 'big';
+}
+
+function playSoundEffect(type, amount) {
+    if (isSoundEnabled) {
+        const category = getSoundCategory(amount);
+        const sound = soundEffects[type][category];
+        
+        if (sound) {
+            sound.play().catch(error => {
+                console.warn(`Sound playback failed for ${type} ${category}:`, error);
+            });
+        }
+    }
+}
+
 // Statistics tracking
 function updateStats() {
     document.getElementById('totalPurchases').textContent = stats.totalPurchases;
@@ -440,8 +480,26 @@ function renderItems(items) {
 
 function createItemCard(item) {
     const card = document.createElement('div');
-    card.classList.add('item-card');
-    
+    card.className = 'item-card';
+    card.dataset.id = item.id;
+
+    // Add delete button ONLY for truly custom items
+    if (item.isCustom === true) {
+        const deleteButton = document.createElement('button');
+        deleteButton.className = 'delete-item-btn';
+        deleteButton.innerHTML = '<i class="fas fa-trash"></i>';
+        deleteButton.addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevent card click event
+            
+            // Confirm deletion
+            const confirmDelete = confirm(`Tem certeza que deseja remover "${item.name}"?`);
+            if (confirmDelete) {
+                removeCustomItem(item.id);
+            }
+        });
+        card.appendChild(deleteButton);
+    }
+
     const imageContainer = document.createElement('div');
     imageContainer.classList.add('item-image-container');
     
@@ -525,6 +583,7 @@ function createItemCard(item) {
             
             // Check achievements
             checkAchievements();
+            playSoundEffect('buy', item.price);
         }
     });
     
@@ -579,6 +638,7 @@ function createItemCard(item) {
             } else {
                 stats.itemsPurchased.set(item.name, -1);
             }
+            playSoundEffect('sell', item.price);
         }
     });
     
@@ -598,6 +658,39 @@ function createItemCard(item) {
     card.appendChild(infoDiv);
     
     return card;
+}
+
+// Function to remove a custom item
+function removeCustomItem(itemId) {
+    // Find the index of the item to remove
+    const itemIndex = items.findIndex(item => item.id === itemId && item.isCustom);
+    
+    if (itemIndex !== -1) {
+        // Remove the item from the array
+        const removedItem = items.splice(itemIndex, 1)[0];
+        
+        // Refund the item's cost
+        remainingBudget += removedItem.price;
+        updateBudgetDisplay();
+        
+        // Re-render the items grid
+        renderItems(items);
+        
+        // Play a sound effect (optional)
+        playSoundEffect('sell', removedItem.price);
+        
+        // Save updated items to local storage
+        localStorage.setItem('items', JSON.stringify(items));
+        
+        // Update customItems array
+        const customItemIndex = customItems.findIndex(item => item.id === itemId);
+        if (customItemIndex !== -1) {
+            customItems.splice(customItemIndex, 1);
+            localStorage.setItem('customItems', JSON.stringify(customItems));
+        }
+    } else {
+        console.warn('Attempted to delete a non-custom or non-existent item');
+    }
 }
 
 // Initialize the display
@@ -718,6 +811,24 @@ window.onclick = function(event) {
         modal.classList.remove('show');
         setTimeout(() => modal.style.display = "none", 300);
     }
+}
+
+// Add sound toggle to settings
+const soundToggleButton = document.createElement('button');
+soundToggleButton.className = 'sound-toggle-button';
+soundToggleButton.innerHTML = `<i class="fas fa-${isSoundEnabled ? 'volume-up' : 'volume-mute'}"></i> Sound`;
+soundToggleButton.addEventListener('click', () => {
+    toggleSound();
+    soundToggleButton.innerHTML = `<i class="fas fa-${isSoundEnabled ? 'volume-up' : 'volume-mute'}"></i> Sound`;
+});
+
+// Add sound toggle to header buttons
+document.querySelector('.header-buttons').appendChild(soundToggleButton);
+
+// Load sound preference from localStorage
+const savedSoundPreference = localStorage.getItem('soundEnabled');
+if (savedSoundPreference !== null) {
+    isSoundEnabled = JSON.parse(savedSoundPreference);
 }
 
 init();

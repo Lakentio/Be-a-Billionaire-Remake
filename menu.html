@@ -109,6 +109,56 @@
             transform: scale(1.05);
         }
 
+        @media (max-width: 480px) {
+            .billionaires-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+                padding: 0.5rem;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .billionaire-card {
+                padding: 1rem;
+            }
+
+            .billionaire-image {
+                width: 120px;
+                height: 120px;
+            }
+
+            .billionaire-name {
+                font-size: 1.3rem;
+            }
+
+            .net-worth {
+                font-size: 1rem;
+            }
+
+            .select-button {
+                width: 100%;
+                padding: 0.7rem 1rem;
+            }
+        }
+
+        @media (min-width: 481px) and (max-width: 768px) {
+            .billionaires-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.5rem;
+                padding: 1rem;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+
+            .billionaire-card {
+                padding: 1.5rem;
+            }
+        }
+
         @media (max-width: 768px) {
             .billionaires-grid {
                 grid-template-columns: 1fr;
@@ -117,6 +167,15 @@
             
             h1 {
                 font-size: 2rem;
+            }
+        }
+
+        /* Responsive touch targets */
+        @media (max-width: 768px) {
+            .billionaire-card,
+            .select-button {
+                min-height: 44px;
+                min-width: 44px;
             }
         }
     </style>

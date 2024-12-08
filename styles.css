@@ -10,6 +10,12 @@
     --modal-bg: rgba(0, 0, 0, 0.5);
     --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     --hover-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    --background-color: #f5f5f5;
+    --primary-color: #4CAF50;
+    --text-secondary-color: #333333;
+    --button-background: #4CAF50;
+    --button-text: #ffffff;
+    --button-hover-background: #45a049;
 }
 
 /* Dark mode colors */
@@ -22,6 +28,12 @@
     --dark-gray: #f5f5f5;
     --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
     --hover-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    --background-color: #2d2d2d;
+    --primary-color: #81c784;
+    --text-secondary-color: #f5f5f5;
+    --button-background: #81c784;
+    --button-text: #1a1a1a;
+    --button-hover-background: #388e3c;
 }
 
 * {
@@ -39,63 +51,133 @@ body {
 }
 
 .sticky-header {
-    position: fixed;
+    position: sticky;
     top: 0;
-    width: 100%;
-    background-color: var(--white);
-    box-shadow: var(--card-shadow);
     z-index: 1000;
-    padding: 1rem;
+    background-color: var(--background-color);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 1rem 0;
 }
 
-.budget-info {
+.header-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     max-width: 1200px;
     margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     padding: 0 1rem;
 }
 
-.total-section, .remaining-section {
+.logo-section {
+    margin-bottom: 1rem;
     text-align: center;
 }
 
-.label {
+.logo-section h1 {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    margin: 0;
+}
+
+.budget-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.budget-summary {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 1rem;
+}
+
+.total-section, 
+.remaining-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.budget-summary .label {
     font-size: 0.9rem;
-    color: var(--dark-gray);
-    display: block;
-    margin-bottom: 0.2rem;
+    color: var(--text-secondary-color);
+    margin-bottom: 0.25rem;
 }
 
-.amount {
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: var(--primary-green);
-    transition: all 0.3s ease-out;
+.budget-summary .amount {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: var(--primary-color);
 }
 
-.amount.sell-animation {
-    animation: sellBalanceAnimation 0.5s ease-in-out;
+.header-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
 }
 
-.amount.buy-animation {
-    animation: buyBalanceAnimation 0.5s ease-in-out;
+.header-buttons button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    background-color: var(--button-background);
+    color: var(--button-text);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
-@keyframes sellBalanceAnimation {
-    0%, 100% { color: var(--primary-green); transform: scale(1); }
-    50% { color: #2E7D32; transform: scale(1.05); }
+.header-buttons button:hover {
+    background-color: var(--button-hover-background);
 }
 
-@keyframes buyBalanceAnimation {
-    0%, 100% { color: var(--primary-green); transform: scale(1); }
-    50% { color: #C62828; transform: scale(1.05); }
+.header-buttons button i {
+    font-size: 1rem;
 }
 
-.amount.animate {
-    transform: scale(1.1);
-    color: var(--dark-green);
+.header-buttons .button-text {
+    display: none;
+}
+
+/* Responsive Styles */
+@media (min-width: 768px) {
+    .header-container {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .logo-section {
+        margin-bottom: 0;
+        margin-right: 2rem;
+    }
+
+    .budget-info {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .budget-summary {
+        margin-bottom: 0;
+        margin-right: 2rem;
+    }
+
+    .header-buttons .button-text {
+        display: inline;
+    }
+}
+
+@media (min-width: 1024px) {
+    .header-buttons button {
+        padding: 0.5rem 1.25rem;
+    }
 }
 
 .main-content {
@@ -124,6 +206,7 @@ body {
     overflow: hidden;
     box-shadow: var(--card-shadow);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
 }
 
 .item-card:hover {
@@ -284,7 +367,8 @@ body {
 .receipt-button,
 .stats-button,
 .achievements-button,
-.dark-mode-button {
+.dark-mode-button,
+.sound-toggle-button {
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 4px;
@@ -313,6 +397,26 @@ body {
 
 .dark-mode-button:hover {
     background-color: var(--light-gray);
+}
+
+.sound-toggle-button {
+    background-color: transparent;
+    color: var(--dark-gray);
+    border: 1px solid var(--dark-gray);
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.sound-toggle-button:hover {
+    background-color: var(--light-gray);
+    transform: translateY(-2px);
+}
+
+.sound-toggle-button i {
+    font-size: 1rem;
 }
 
 .modal {
@@ -747,17 +851,167 @@ body {
     z-index: 2;
 }
 
-@media (max-width: 768px) {
-    .budget-info {
+.delete-item-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: var(--red);
+    color: white;
+    border: none;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: background-color 0.3s ease;
+}
+
+.item-card:hover .delete-item-btn {
+    display: flex;
+}
+
+.delete-item-btn:hover {
+    background-color: var(--dark-red);
+}
+
+@media (max-width: 480px) {
+    .sticky-header {
+        padding: 0.5rem 0;
+    }
+
+    .header-container {
         flex-direction: column;
-        gap: 1rem;
+        padding: 0 0.5rem;
+    }
+
+    .logo-section h1 {
+        font-size: 1.2rem;
+    }
+
+    .budget-summary {
+        flex-direction: column;
+        gap: 0.5rem;
+        text-align: center;
+    }
+
+    .header-buttons {
+        flex-wrap: wrap;
+        gap: 0.25rem;
+    }
+
+    .header-buttons button {
+        padding: 0.4rem 0.75rem;
+        font-size: 0.8rem;
+    }
+
+    .main-content {
+        margin: 4rem auto 1rem;
+        padding: 0 0.5rem;
     }
 
     .title {
         font-size: 2rem;
+        margin-bottom: 1rem;
     }
 
-    .main-content {
-        margin-top: 9rem;
+    .items-container {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        padding: 0.5rem;
+    }
+
+    .search-section {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .search-bar {
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+
+    .category-filters {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .modal-content {
+        width: 95%;
+        margin: 10% auto;
+        padding: 1rem;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .footer {
+        padding: 1rem 0.5rem;
+        flex-direction: column;
+        text-align: center;
+    }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+    .sticky-header {
+        padding: 0.75rem 0;
+    }
+
+    .header-container {
+        flex-direction: column;
+        padding: 0 1rem;
+    }
+
+    .budget-summary {
+        flex-direction: row;
+        gap: 1rem;
+    }
+
+    .items-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+
+    .search-section {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .search-bar {
+        width: 100%;
+        max-width: 500px;
+        margin-bottom: 1rem;
+    }
+
+    .modal-content {
+        width: 90%;
+        margin: 5% auto;
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        font-size: 14px;
+    }
+
+    /* Increase touch target sizes for mobile */
+    .header-buttons button,
+    .select-button,
+    .search-bar input,
+    .category-filters button {
+        min-height: 44px;
+        min-width: 44px;
+    }
+
+    /* Improve form inputs for touch */
+    input, 
+    select, 
+    textarea, 
+    button {
+        font-size: 16px; /* Prevent zoom on iOS */
     }
 }

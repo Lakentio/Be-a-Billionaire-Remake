@@ -10,34 +10,49 @@
 </head>
 <body>
     <header class="sticky-header">
-        <div class="budget-info">
-            <div class="total-section">
-                <span class="label">Total Budget:</span>
-                <span class="amount" id="totalBudget">$100,000,000,000</span>
+        <div class="header-container">
+            <div class="logo-section">
+                <h1>Spend a Billionaire's Fortune</h1>
             </div>
-            <div class="remaining-section">
-                <span class="label">Remaining:</span>
-                <span class="amount" id="remainingBudget">$100,000,000,000</span>
-            </div>
-            <div class="header-buttons">
-                <button id="createItemButton" class="create-item-button">
-                    <i class="fas fa-plus"></i> Create Item
-                </button>
-                <button id="importExportButton" class="import-export-button">
-                    <i class="fas fa-file-import"></i> Import/Export
-                </button>
-                <button id="receiptButton" class="receipt-button">
-                    <i class="fas fa-receipt"></i> View Receipt
-                </button>
-                <button id="achievementsButton" class="achievements-button">
-                    <i class="fas fa-trophy"></i> Achievements
-                </button>
-                <button id="statsButton" class="stats-button">
-                    <i class="fas fa-chart-bar"></i> Statistics
-                </button>
-                <button id="darkModeToggle" class="dark-mode-button">
-                    <i class="fas fa-moon"></i>
-                </button>
+            <div class="budget-info">
+                <div class="budget-summary">
+                    <div class="total-section">
+                        <span class="label">Total Budget:</span>
+                        <span class="amount" id="totalBudget">$100,000,000,000</span>
+                    </div>
+                    <div class="remaining-section">
+                        <span class="label">Remaining:</span>
+                        <span class="amount" id="remainingBudget">$100,000,000,000</span>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <div class="header-buttons">
+                        <button id="createItemButton" class="create-item-button" title="Create Item">
+                            <i class="fas fa-plus"></i>
+                            <span class="button-text">Create</span>
+                        </button>
+                        <button id="importExportButton" class="import-export-button" title="Import/Export">
+                            <i class="fas fa-file-import"></i>
+                            <span class="button-text">Import/Export</span>
+                        </button>
+                        <button id="receiptButton" class="receipt-button" title="View Receipt">
+                            <i class="fas fa-receipt"></i>
+                            <span class="button-text">Receipt</span>
+                        </button>
+                        <button id="achievementsButton" class="achievements-button" title="Achievements">
+                            <i class="fas fa-trophy"></i>
+                            <span class="button-text">Achievements</span>
+                        </button>
+                        <button id="statsButton" class="stats-button" title="Statistics">
+                            <i class="fas fa-chart-bar"></i>
+                            <span class="button-text">Stats</span>
+                        </button>
+                        <button id="darkModeToggle" class="dark-mode-button" title="Toggle Dark Mode">
+                            <i class="fas fa-moon"></i>
+                            <span class="button-text">Dark Mode</span>
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </header>
