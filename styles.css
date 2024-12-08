@@ -722,6 +722,23 @@ body {
     }
 }
 
+.fun-fact-container {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 15px;
+    border-radius: 10px;
+    max-width: 80%;
+    text-align: center;
+    z-index: 1000;
+    font-size: 0.9rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: opacity 0.3s ease;
+}
+
 /* Create Item Button */
 .create-item-button {
     background-color: #4CAF50;
@@ -1087,4 +1104,223 @@ body {
     button {
         font-size: 16px; /* Prevent zoom on iOS */
     }
+}
+
+.milestone-celebration-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.celebration-content {
+    background-color: white;
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    max-width: 500px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.celebration-content h2 {
+    color: #4CAF50;
+    margin-bottom: 15px;
+}
+
+.celebration-content button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+.confetti {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    background-color: #f1c40f;
+    top: -10px;
+    animation: fall linear forwards;
+    z-index: 1999;
+}
+
+@keyframes fall {
+    to {
+        transform: translateY(100vh) rotate(360deg);
+    }
+}
+
+/* Mobile and Tablet Responsiveness Enhancements */
+@media screen and (max-width: 1024px) {
+    body {
+        font-size: 14px;
+    }
+
+    .header {
+        flex-direction: column;
+        padding: 10px;
+    }
+
+    .logo {
+        margin-bottom: 10px;
+    }
+
+    .billionaire-selection {
+        width: 100%;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .billionaire-card {
+        width: 90%;
+        margin: 10px 0;
+    }
+
+    .items-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    .item-card {
+        width: 100%;
+        margin: 5px 0;
+    }
+
+    .purchase-modal {
+        width: 95%;
+        max-width: 500px;
+    }
+
+    .stats-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .stats-section {
+        width: 100%;
+        margin: 10px 0;
+    }
+
+    .create-item-modal {
+        width: 95%;
+        max-width: 500px;
+    }
+
+    .achievements-banner {
+        width: 90%;
+        padding: 10px;
+        font-size: 0.9em;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    body {
+        font-size: 12px;
+    }
+
+    .items-container {
+        grid-template-columns: 1fr;
+    }
+
+    .billionaire-card {
+        width: 100%;
+    }
+
+    .fun-fact-container {
+        width: 90%;
+        font-size: 0.8rem;
+        padding: 10px;
+    }
+
+    .milestone-celebration-modal .celebration-content {
+        width: 90%;
+        padding: 20px;
+    }
+
+    .header-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .header-buttons button {
+        margin: 5px 0;
+        width: 100%;
+    }
+}
+
+/* Touch-friendly adjustments */
+@media (pointer: coarse) {
+    .item-card, .billionaire-card, button {
+        min-height: 44px;  /* Minimum touch target size */
+        min-width: 44px;
+        padding: 10px;
+    }
+
+    .item-card-actions {
+        flex-direction: column;
+    }
+
+    .quantity-controls {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+}
+
+/* Ensure proper scaling and prevent text overflow */
+* {
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+input, button, select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 5px 0;
+}
+
+/* Responsive typography */
+html {
+    font-size: 16px;
+}
+
+@media screen and (max-width: 1024px) {
+    html {
+        font-size: 14px;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    html {
+        font-size: 12px;
+    }
+}
+
+/* Touch Interaction Styles */
+.touch-active {
+    transform: scale(0.95);
+    opacity: 0.8;
+    transition: transform 0.1s, opacity 0.1s;
+}
+
+/* Prevent blue highlight on mobile tap */
+* {
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Ensure smooth scrolling on touch devices */
+html, body {
+    overscroll-behavior-y: none;
+    -webkit-overflow-scrolling: touch;
 }

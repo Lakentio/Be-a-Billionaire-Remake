@@ -2,7 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#4CAF50">
+    <link rel="manifest" href="manifest.json">
     <title>Spend Billionaire Money</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -70,13 +72,16 @@
             </div>
         </div>
 
-        <div class="items-container" id="itemsGrid">
-            <!-- Items will be dynamically added here -->
-        </div>
+        <div id="app-container">
+            <div id="fun-fact-display" class="fun-fact-container" style="display: none;"></div>
+            <div class="items-container" id="itemsGrid">
+                <!-- Items will be dynamically added here -->
+            </div>
 
-        <div id="achievements" class="achievements-banner hidden">
-            <i class="fas fa-trophy"></i>
-            <span class="achievement-text"></span>
+            <div id="achievements" class="achievements-banner hidden">
+                <i class="fas fa-trophy"></i>
+                <span class="achievement-text"></span>
+            </div>
         </div>
     </main>
 

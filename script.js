@@ -610,6 +610,47 @@ function init() {
     initializeCategories();
     renderItems(items);
     updateAchievementsList();
+    optimizeTouchInteractions();
+    addTouchFeedback();
+}
+
+// Mobile and Touch Device Optimizations
+function optimizeTouchInteractions() {
+    // Prevent default touch behaviors that might interfere with interactions
+    document.addEventListener('touchstart', function(e) {
+        if (e.touches.length > 1) {
+            e.preventDefault();
+        }
+    }, { passive: false });
+
+    document.addEventListener('touchend', function(e) {
+        // Add slight delay to prevent accidental double-taps
+        setTimeout(() => {
+            e.target.blur();
+        }, 100);
+    });
+
+    // Improve scrolling performance on touch devices
+    document.body.style.overscrollBehavior = 'none';
+}
+
+// Add touch feedback to interactive elements
+function addTouchFeedback() {
+    const touchElements = document.querySelectorAll('.item-card, button, .billionaire-card');
+    
+    touchElements.forEach(el => {
+        el.addEventListener('touchstart', function() {
+            this.classList.add('touch-active');
+        });
+        
+        el.addEventListener('touchend', function() {
+            this.classList.remove('touch-active');
+        });
+        
+        el.addEventListener('touchcancel', function() {
+            this.classList.remove('touch-active');
+        });
+    });
 }
 
 // Items grid
@@ -728,7 +769,9 @@ function createItemCard(item) {
             
             // Check achievements
             checkAchievements();
+            checkPurchaseMilestones(stats.moneySpent);
             playSoundEffect('buy', item.price);
+            updatePurchaseWithFunFact();
         }
     });
     
@@ -974,6 +1017,93 @@ document.querySelector('.header-buttons').appendChild(soundToggleButton);
 const savedSoundPreference = localStorage.getItem('soundEnabled');
 if (savedSoundPreference !== null) {
     isSoundEnabled = JSON.parse(savedSoundPreference);
+}
+
+// Fun Fact Generator
+const funFacts = [
+    "If you earned $1 million a year, it would take you 2,000 years to become a billionaire!",
+    "The world's richest 1% own more than 43% of the world's wealth.",
+    "Jeff Bezos could buy a new $20,000 car every single minute and still be a billionaire.",
+    "A stack of one billion $1 bills would be about 67.9 miles high!",
+    "If you saved $1,000 every day, it would take you almost 3 years to save $1 million.",
+    "The average person would need to work over 2,000 years to earn a billionaire's annual income.",
+    "More people have gone to space than have become billionaires."
+];
+
+function generateFunFact() {
+    const factElement = document.getElementById('fun-fact-display');
+    const randomFact = funFacts[Math.floor(Math.random() * funFacts.length)];
+    
+    if (factElement) {
+        factElement.textContent = randomFact;
+        factElement.style.display = 'block';
+        
+        // Auto-hide after 10 seconds
+        setTimeout(() => {
+            factElement.style.display = 'none';
+        }, 10000);
+    }
+}
+
+// Call fun fact generator after each purchase
+function updatePurchaseWithFunFact() {
+    generateFunFact();
+}
+
+// Purchase Milestone Celebrations
+function checkPurchaseMilestones(totalSpent) {
+    const milestones = [
+        { amount: 10000000, message: "🎉 Congratulations! You've spent $10 million - Living Large!" },
+        { amount: 100000000, message: "🚀 Wow! $100 million spent - You're redefining luxury!" },
+        { amount: 500000000, message: "💎 Half a BILLION spent! You're basically a modern-day monarch!" },
+        { amount: 1000000000, message: "🌟 BILLIONAIRE LEVEL ACHIEVED! You've spent a BILLION dollars!" }
+    ];
+
+    const achievedMilestone = milestones.find(milestone => 
+        totalSpent >= milestone.amount && 
+        (!window.lastMilestoneAchieved || milestone.amount > window.lastMilestoneAchieved)
+    );
+
+    if (achievedMilestone) {
+        showCelebrationModal(achievedMilestone.message);
+        window.lastMilestoneAchieved = achievedMilestone.amount;
+    }
+}
+
+function showCelebrationModal(message) {
+    const modal = document.createElement('div');
+    modal.className = 'milestone-celebration-modal';
+    modal.innerHTML = `
+        <div class="celebration-content">
+            <h2>Milestone Reached!</h2>
+            <p>${message}</p>
+            <button onclick="this.closest('.milestone-celebration-modal').remove()">Close</button>
+        </div>
+    `;
+    document.body.appendChild(modal);
+
+    // Add confetti effect
+    for (let i = 0; i < 100; i++) {
+        createConfetti();
+    }
+}
+
+function createConfetti() {
+    const confetti = document.createElement('div');
+    confetti.className = 'confetti';
+    confetti.style.left = Math.random() * 100 + '%';
+    confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
+    confetti.style.backgroundColor = getRandomColor();
+    document.body.appendChild(confetti);
+
+    setTimeout(() => {
+        confetti.remove();
+    }, 5000);
+}
+
+function getRandomColor() {
+    const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#f9d56e', '#ff9ff3'];
+    return colors[Math.floor(Math.random() * colors.length)];
 }
 
 init();
