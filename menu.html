@@ -1,222 +1,208 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Choose Your Billionaire</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Escolha seu Bilionário</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <style>
+        :root {
+            --primary-color: #4CAF50;
+            --background-color: #F4F6F7;
+            --text-color: #2C3E50;
+            --card-background: #FFFFFF;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            font-family: 'Roboto', sans-serif;
         }
 
         body {
+            background-color: var(--background-color);
+            color: var(--text-color);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            background: #ffffff;
-            padding: 2rem;
+            overscroll-behavior-y: none;
+            touch-action: manipulation;
         }
 
-        h1 {
-            color: #333;
+        .container {
+            max-width: 600px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 15px;
+        }
+
+        .header {
             text-align: center;
-            margin-bottom: 2rem;
-            font-size: 2.5rem;
+            margin-bottom: 20px;
             position: relative;
-            padding-bottom: 10px;
         }
 
-        h1::after {
+        .header h1 {
+            color: var(--primary-color);
+            font-size: 2rem;
+            font-weight: 700;
+            position: relative;
+            display: inline-block;
+        }
+
+        .header h1::after {
             content: '';
             position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100px;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
             height: 3px;
-            background: #4CAF50;
+            background-color: var(--primary-color);
         }
 
         .billionaires-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            max-width: 1200px;
-            width: 100%;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
         }
 
         .billionaire-card {
-            background: #1a1a1a;
-            border-radius: 15px;
-            padding: 2rem;
+            background-color: var(--card-background);
+            border-radius: 10px;
+            padding: 20px;
             text-align: center;
-            cursor: pointer;
+            box-shadow: 0 4px 6px var(--shadow-color);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-            border: 1px solid #333;
+            cursor: pointer;
         }
 
-        .billionaire-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
-            border-color: #4CAF50;
+        .billionaire-card:active {
+            transform: scale(0.95);
         }
 
         .billionaire-image {
-            width: 150px;
-            height: 150px;
+            width: 120px;
+            height: 120px;
             border-radius: 50%;
-            margin-bottom: 1rem;
             object-fit: cover;
-            border: 3px solid #4CAF50;
-            box-shadow: 0 0 10px rgba(76, 175, 80, 0.3);
+            border: 3px solid var(--primary-color);
+            margin-bottom: 15px;
         }
 
         .billionaire-name {
-            color: #ffffff;
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+            font-weight: 500;
+            margin-bottom: 10px;
         }
 
         .net-worth {
-            color: #4CAF50;
-            font-size: 1.2rem;
-            margin-bottom: 1rem;
-            font-weight: 600;
-            text-shadow: 0 0 10px rgba(76, 175, 80, 0.3);
+            color: var(--primary-color);
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 15px;
         }
 
         .select-button {
-            background: #4CAF50;
+            background-color: var(--primary-color);
             color: white;
             border: none;
-            padding: 0.8rem 1.5rem;
+            padding: 10px 20px;
             border-radius: 25px;
             font-size: 1rem;
             cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 500;
-            width: 80%;
+            transition: background-color 0.3s ease;
+            width: 100%;
         }
 
-        .select-button:hover {
-            background: #45a049;
-            transform: scale(1.05);
+        .select-button:active {
+            background-color: #45a049;
         }
 
         @media (max-width: 480px) {
             .billionaires-grid {
                 grid-template-columns: 1fr;
-                gap: 1rem;
-                padding: 0.5rem;
-            }
-            
-            h1 {
-                font-size: 1.8rem;
             }
 
-            .billionaire-card {
-                padding: 1rem;
+            .header h1 {
+                font-size: 1.5rem;
             }
 
             .billionaire-image {
-                width: 120px;
-                height: 120px;
-            }
-
-            .billionaire-name {
-                font-size: 1.3rem;
-            }
-
-            .net-worth {
-                font-size: 1rem;
-            }
-
-            .select-button {
-                width: 100%;
-                padding: 0.7rem 1rem;
+                width: 100px;
+                height: 100px;
             }
         }
 
-        @media (min-width: 481px) and (max-width: 768px) {
-            .billionaires-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 1.5rem;
-                padding: 1rem;
-            }
-            
-            h1 {
-                font-size: 2.2rem;
-            }
-
-            .billionaire-card {
-                padding: 1.5rem;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .billionaires-grid {
-                grid-template-columns: 1fr;
-                padding: 1rem;
-            }
-            
-            h1 {
-                font-size: 2rem;
-            }
-        }
-
-        /* Responsive touch targets */
-        @media (max-width: 768px) {
-            .billionaire-card,
-            .select-button {
-                min-height: 44px;
-                min-width: 44px;
+        /* Dark Mode Support */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --background-color: #1E1E1E;
+                --text-color: #E0E0E0;
+                --card-background: #2C2C2C;
             }
         }
     </style>
 </head>
 <body>
-    <h1>Choose Your Billionaire</h1>
-    <div class="billionaires-grid">
-        <div class="billionaire-card" onclick="selectBillionaire(234000000000)">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/1/18/Mark_Zuckerberg_F8_2019_Keynote_%2832830578717%29_%28cropped%29.jpg" alt="Mark Zuckerberg" class="billionaire-image">
-            <h2 class="billionaire-name">Mark Zuckerberg</h2>
-            <p class="net-worth">Net Worth: $234 Billion</p>
-            <button class="select-button">Select</button>
+    <div class="container">
+        <div class="header">
+            <h1>Escolha seu Bilionário</h1>
         </div>
-        <div class="billionaire-card" onclick="selectBillionaire(186000000000)">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/3/34/Elon_Musk_Royal_Society_%28crop2%29.jpg" alt="Elon Musk" class="billionaire-image">
-            <h2 class="billionaire-name">Elon Musk</h2>
-            <p class="net-worth">Net Worth: $186 Billion</p>
-            <button class="select-button">Select</button>
-        </div>
-        <div class="billionaire-card" onclick="selectBillionaire(164000000000)">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/6/67/Bill_Gates_-_2023_-_P062021-670188_%28cropped%29.jpg" alt="Bill Gates" class="billionaire-image">
-            <h2 class="billionaire-name">Bill Gates</h2>
-            <p class="net-worth">Net Worth: $164 Billion</p>
-            <button class="select-button">Select</button>
-        </div>
-        <div class="billionaire-card" onclick="selectBillionaire(177000000000)">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/Jeff_Bezos_visits_LAAFB_SMC_%283908618%29_%28cropped%29.jpeg/200px-Jeff_Bezos_visits_LAAFB_SMC_%283908618%29_%28cropped%29.jpeg" alt="Jeff Bezos" class="billionaire-image">
-            <h2 class="billionaire-name">Jeff Bezos</h2>
-            <p class="net-worth">Net Worth: $177 Billion</p>
-            <button class="select-button">Select</button>
+        <div class="billionaires-grid" id="billionaires-container">
+            <!-- Billionaire cards will be dynamically added here -->
         </div>
     </div>
 
     <script>
+        const billionaires = [
+            {
+                name: "Mark Zuckerberg",
+                netWorth: 234000000000,
+                image: "https://upload.wikimedia.org/wikipedia/commons/1/18/Mark_Zuckerberg_F8_2019_Keynote_%2832830578717%29_%28cropped%29.jpg"
+            },
+            {
+                name: "Elon Musk",
+                netWorth: 186000000000,
+                image: "https://upload.wikimedia.org/wikipedia/commons/3/34/Elon_Musk_Royal_Society_%28crop2%29.jpg"
+            },
+            {
+                name: "Bill Gates",
+                netWorth: 164000000000,
+                image: "https://upload.wikimedia.org/wikipedia/commons/6/67/Bill_Gates_-_2023_-_P062021-670188_%28cropped%29.jpg"
+            },
+            {
+                name: "Jeff Bezos",
+                netWorth: 177000000000,
+                image: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/Jeff_Bezos_visits_LAAFB_SMC_%283908618%29_%28cropped%29.jpeg/200px-Jeff_Bezos_visits_LAAFB_SMC_%283908618%29_%28cropped%29.jpeg"
+            }
+        ];
+
+        function renderBillionaires() {
+            const container = document.getElementById('billionaires-container');
+            billionaires.forEach(billionaire => {
+                const card = document.createElement('div');
+                card.className = 'billionaire-card';
+                card.innerHTML = `
+                    <img src="${billionaire.image}" alt="${billionaire.name}" class="billionaire-image">
+                    <h2 class="billionaire-name">${billionaire.name}</h2>
+                    <p class="net-worth">Patrimônio Líquido: $${(billionaire.netWorth / 1000000000).toFixed(0)} Bilhões</p>
+                    <button class="select-button" onclick="selectBillionaire(${billionaire.netWorth})">Selecionar</button>
+                `;
+                container.appendChild(card);
+            });
+        }
+
         function selectBillionaire(netWorth) {
-            console.log('Selected net worth:', netWorth);
-            localStorage.clear(); // Clear any old data
-            localStorage.setItem('selectedBillionaireNetWorth', netWorth.toString());
-            console.log('Stored net worth:', localStorage.getItem('selectedBillionaireNetWorth'));
+            localStorage.setItem('selectedBillionaireNetWorth', netWorth);
             window.location.href = 'index.html';
         }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', renderBillionaires);
     </script>
 </body>
 </html>
