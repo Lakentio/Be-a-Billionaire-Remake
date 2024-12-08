@@ -344,7 +344,6 @@ function checkAchievements() {
 
     unlockedAchievements.forEach(achievement => showAchievementBanner(achievement));
     updateAchievementsList();
-    return unlockedAchievements.length > 0 ? unlockedAchievements[0] : null;
 }
 
 function showAchievementBanner(achievement) {
@@ -441,53 +440,17 @@ function renderItems(items) {
 
 function createItemCard(item) {
     const card = document.createElement('div');
-    card.className = 'item-card';
+    card.classList.add('item-card');
     
-    // Add custom item indicator if it's a custom item
-    if (item.isCustom) {
-        card.classList.add('custom-item');
-    }
-
     const imageContainer = document.createElement('div');
-    imageContainer.className = 'item-image-container';
+    imageContainer.classList.add('item-image-container');
     
-    const image = document.createElement('img');
-    image.src = item.image;
-    image.alt = item.name;
-    image.className = 'item-image';
+    const img = document.createElement('img');
+    img.src = item.image;
+    img.alt = item.name;
+    img.classList.add('item-image');
     
-    // Add edit and delete buttons for custom items
-    if (item.isCustom) {
-        const buttonContainer = document.createElement('div');
-        buttonContainer.className = 'custom-item-buttons';
-        
-        const editButton = document.createElement('button');
-        editButton.className = 'edit-button';
-        editButton.innerHTML = '<i class="fas fa-edit"></i>';
-        editButton.title = 'Edit Item';
-        editButton.onclick = (e) => {
-            e.stopPropagation();
-            editCustomItem(item);
-        };
-        
-        const deleteButton = document.createElement('button');
-        deleteButton.className = 'delete-button';
-        deleteButton.innerHTML = '<i class="fas fa-trash"></i>';
-        deleteButton.title = 'Delete Item';
-        deleteButton.onclick = (e) => {
-            e.stopPropagation();
-            if (confirm(`Are you sure you want to delete "${item.name}"?`)) {
-                deleteCustomItem(item);
-            }
-        };
-        
-        buttonContainer.appendChild(editButton);
-        buttonContainer.appendChild(deleteButton);
-        imageContainer.appendChild(buttonContainer);
-    }
-    
-    imageContainer.appendChild(image);
-    card.appendChild(imageContainer);
+    imageContainer.appendChild(img);
     
     const infoDiv = document.createElement('div');
     infoDiv.classList.add('item-info');
@@ -516,7 +479,7 @@ function createItemCard(item) {
         sellButton.disabled = true;
     }
     
-    buyButton.addEventListener('click', () => {
+    buyButton.addEventListener('click', (event) => {
         if (remainingBudget >= item.price) {
             const rect = buyButton.getBoundingClientRect();
             const x = rect.left + rect.width / 2;
@@ -560,17 +523,8 @@ function createItemCard(item) {
                 stats.itemsPurchased.set(item.name, 1);
             }
             
-            // Play purchase sound
-            sounds.purchase.play();
-            
-            // Show fun fact
-            showFunFact(item.price);
-            
-            // Check achievements with sound
-            const newAchievement = checkAchievements();
-            if (newAchievement) {
-                sounds.achievement.play();
-            }
+            // Check achievements
+            checkAchievements();
         }
     });
     
@@ -640,144 +594,11 @@ function createItemCard(item) {
     infoDiv.appendChild(buttonsRow);
     infoDiv.appendChild(quantityDisplay);
     
+    card.appendChild(imageContainer);
     card.appendChild(infoDiv);
     
     return card;
 }
-
-// Function to delete custom item
-function deleteCustomItem(item) {
-    // Remove from customItems array
-    customItems = customItems.filter(customItem => customItem.name !== item.name);
-    
-    // Remove from items array
-    const itemIndex = items.findIndex(i => i.name === item.name);
-    if (itemIndex > -1) {
-        items.splice(itemIndex, 1);
-    }
-    
-    // Update localStorage
-    localStorage.setItem('customItems', JSON.stringify(customItems));
-    
-    // Re-render items
-    renderItems(items);
-    
-    // Show success message
-    const factElement = document.createElement('div');
-    factElement.className = 'fun-fact';
-    factElement.textContent = `"${item.name}" has been deleted!`;
-    document.body.appendChild(factElement);
-    setTimeout(() => {
-        factElement.classList.add('fade-out');
-        setTimeout(() => factElement.remove(), 500);
-    }, 4000);
-}
-
-// Function to edit custom item
-async function editCustomItem(item) {
-    // Populate form with current values
-    document.getElementById('editItemOriginalName').value = item.name;
-    document.getElementById('editItemName').value = item.name;
-    document.getElementById('editItemPrice').value = item.price;
-    document.getElementById('editItemCategory').value = item.category;
-    
-    // Show current image
-    editImagePreview.innerHTML = `<img src="${item.image}" alt="Current Image">`;
-    
-    // Show modal
-    editItemModal.style.display = 'block';
-}
-
-// Close edit modal when clicking outside
-window.addEventListener('click', (event) => {
-    if (event.target === editItemModal) {
-        editItemModal.style.display = 'none';
-    }
-});
-
-// Close button for edit modal
-const editModalCloseButton = editItemModal.querySelector('.close');
-editModalCloseButton.addEventListener('click', () => {
-    editItemModal.style.display = 'none';
-});
-
-// Edit image preview
-editItemImage.addEventListener('change', (e) => {
-    const file = e.target.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            editImagePreview.innerHTML = `<img src="${e.target.result}" alt="Preview">`;
-        };
-        reader.readAsDataURL(file);
-    }
-});
-
-// Handle edit form submission
-editItemForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    
-    const originalName = document.getElementById('editItemOriginalName').value;
-    const name = document.getElementById('editItemName').value;
-    const price = parseFloat(document.getElementById('editItemPrice').value);
-    const category = document.getElementById('editItemCategory').value;
-    const imageFile = document.getElementById('editItemImage').files[0];
-
-    // Find item in arrays
-    const customItemIndex = customItems.findIndex(item => item.name === originalName);
-    const itemIndex = items.findIndex(item => item.name === originalName);
-
-    if (customItemIndex === -1 || itemIndex === -1) {
-        alert('Error: Item not found');
-        return;
-    }
-
-    // Get image (either new or keep existing)
-    let imageData;
-    if (imageFile) {
-        imageData = await new Promise((resolve) => {
-            const reader = new FileReader();
-            reader.onload = (e) => resolve(e.target.result);
-            reader.readAsDataURL(imageFile);
-        });
-    } else {
-        imageData = customItems[customItemIndex].image;
-    }
-
-    // Create updated item
-    const updatedItem = {
-        name,
-        price,
-        category,
-        image: imageData,
-        isCustom: true
-    };
-
-    // Update arrays
-    customItems[customItemIndex] = updatedItem;
-    items[itemIndex] = updatedItem;
-
-    // Update localStorage
-    localStorage.setItem('customItems', JSON.stringify(customItems));
-
-    // Refresh display
-    renderItems(items);
-    
-    // Reset form and close modal
-    editItemForm.reset();
-    editImagePreview.innerHTML = '';
-    editItemModal.style.display = 'none';
-
-    // Show success message
-    const factElement = document.createElement('div');
-    factElement.className = 'fun-fact';
-    factElement.textContent = `Successfully updated "${name}"!`;
-    document.body.appendChild(factElement);
-    setTimeout(() => {
-        factElement.classList.add('fade-out');
-        setTimeout(() => factElement.remove(), 500);
-    }, 4000);
-});
 
 // Initialize the display
 const totalBudgetElement = document.getElementById('totalBudget');
@@ -792,6 +613,7 @@ updateBudgetDisplay();
 function animateMoneyDecrease(amount, x, y) {
     const element = document.createElement('div');
     element.className = 'money-decrease';
+    element.textContent = `-${formatCurrency(amount)}`;
     element.style.left = `${x}px`;
     element.style.top = `${y}px`;
     document.body.appendChild(element);
@@ -844,48 +666,6 @@ function formatCurrency(amount) {
         currency: 'USD',
         maximumFractionDigits: 0
     }).format(amount);
-}
-
-// Sound effects
-const sounds = {
-    purchase: new Audio('https://assets.mixkit.co/active_storage/sfx/2058/2058-preview.mp3'),
-    achievement: new Audio('https://assets.mixkit.co/active_storage/sfx/1435/1435-preview.mp3'),
-};
-
-// Random fun facts about money
-const funFacts = [
-    "This amount could buy {number} average homes in the US!",
-    "You could pay for {number} college students' tuition with this money!",
-    "This is equivalent to {number} years of average salary!",
-    "You could buy {number} Tesla Model 3s with this amount!",
-];
-
-function showFunFact(amount) {
-    const fact = funFacts[Math.floor(Math.random() * funFacts.length)];
-    let number;
-    
-    // Calculate relevant numbers based on the amount
-    if (fact.includes("homes")) {
-        number = Math.round(amount / 400000); // Average home price
-    } else if (fact.includes("college")) {
-        number = Math.round(amount / 35000); // Average yearly tuition
-    } else if (fact.includes("salary")) {
-        number = Math.round(amount / 50000); // Average yearly salary
-    } else if (fact.includes("Tesla")) {
-        number = Math.round(amount / 40000); // Tesla Model 3 price
-    }
-    
-    const formattedFact = fact.replace("{number}", number.toLocaleString());
-    
-    const factElement = document.createElement('div');
-    factElement.className = 'fun-fact';
-    factElement.textContent = formattedFact;
-    document.body.appendChild(factElement);
-    
-    setTimeout(() => {
-        factElement.classList.add('fade-out');
-        setTimeout(() => factElement.remove(), 500);
-    }, 4000);
 }
 
 // Generate receipt
