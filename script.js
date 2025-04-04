@@ -62,13 +62,13 @@ const items = [
     {
         name: "iPhone 14 Pro",
         price: 999,
-        image: 'assets/iphone16.webp',
+        image: 'assets/iphone16.png',
         category: "Tech"
     },
     {
         name: "MacBook Pro M2",
         price: 2499,
-        image: 'assets/macbook.webp',
+        image: 'assets/macbook.png',
         category: "Tech"
     },
     {
@@ -86,13 +86,13 @@ const items = [
     {
         name: "Drone DJI Mavic",
         price: 1299,
-        image: 'assets/drone.webp',
+        image: 'assets/drone.png',
         category: "Tech"
     },
     {
         name: "Virtual Reality Set",
         price: 799,
-        image: 'assets/vr.jpg',
+        image: 'assets/vr.png',
         category: "Tech"
     },
     
